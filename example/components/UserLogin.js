@@ -28,7 +28,7 @@ export default class UserLogin extends Component {
         const {
             loading: loginLoading,
             error: loginError
-        } = user.getActionState('login');
+        } = user.getActionState('user/login');
 
         const errorVal = user.loginError;
 

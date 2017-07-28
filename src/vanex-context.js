@@ -23,6 +23,8 @@ export default class MobxContext {
     constructor(models = {}, opts = {}) {
         this._middleware = opts.middleware || globalMiddleware;
         this._relation = opts.relation || new MobxRelation;
+        this._plugin = opts.plugin;
+        
         this._models = {};
 
         this.models = models;
@@ -59,13 +61,15 @@ export default class MobxContext {
 
             // Get a class
             if (isMobxModelClass(Model)) {
-                return new Model(null, this._middleware);
+                return new Model(null, this._middleware, this._plugin);
             }
 
             // Get an instance
             if (Model instanceof MobxModel) {
                 // update model's middleware
                 Model.middleware = this._middleware;
+                Model._plugin = this._plugin;
+                
                 return Model;
             }
         }));
@@ -90,9 +94,10 @@ export default class MobxContext {
                 this._relation.execInMiddleware({
                     ...arg,
                     fullname,
-                    context: this
+                    context: this,
                 });
             });
+            
             return arg.payload;
         };
 

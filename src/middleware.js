@@ -17,11 +17,13 @@ export default class Middleware {
         if (!Array.isArray(middleware)) {
             middleware = [middleware];
         }
+
         for (const fn of middleware) {
             if (!isFunction(fn)) {
                 throw new TypeError('Middleware must be composed of functions!');
             }
         }
+        
         this.middleware = [...this.middleware, ...middleware];
     }
 

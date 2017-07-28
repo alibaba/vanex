@@ -1,30 +1,22 @@
 import {
-    extendObservable,
-    autorun,
-    toJS,
-    runInAction,
     action,
+    autorun,
+    extendObservable,
     isObservableArray,
+    runInAction,
+    spy,
+    toJS
 } from 'mobx';
-
-import {
-    mapValues,
-    deepMapValues,
-    each,
-    isRegExp,
-} from './utils';
+import {deepMapValues, each, isRegExp, mapValues} from './utils';
 
 let count = 0;
 
 export default class MobxModel {
     static uuid = 0
 
-    constructor(initData = {}, middleware, autorunMap = {}, constants = {}) {
-        if (
-            this.constructor !== MobxModel &&
-            this.constructor.uuid === Object.getPrototypeOf(this.constructor).uuid
-        ) {
-            throw new Error('[MobxModel] Can not immediately extend from MobxModel.');
+    constructor(initData = {}, middleware, plugin, autorunMap = {}, constants = {}) {
+        if (this.constructor !== MobxModel && this.constructor.uuid === Object.getPrototypeOf(this.constructor).uuid) {
+            throw new Error('[Vanex] Can not immediately extend from MobxModel.');
         }
 
         // 保存action状态
@@ -32,39 +24,44 @@ export default class MobxModel {
 
         // 保存当前传进来的中间件
         this._middleware = middleware;
+        this._plugin = plugin;
+        
         this._id = count++;
 
-        Object.keys(initData).forEach((key) => {
-            if (constants[key] !== undefined) {
-                throw new Error(`[MobxModel] data key "${key}" is defined in constants`);
-            }
-        });
+        Object
+            .keys(initData)
+            .forEach((key) => {
+                if (constants[key] !== undefined) {
+                    throw new Error(`[MobxModel] data key "${key}" is defined in constants`);
+                }
+            });
 
         // check keys
-        this._dataKeys = Object.keys(initData).concat(Object.keys(constants));
+        this._dataKeys = Object
+            .keys(initData)
+            .concat(Object.keys(constants));
 
         this._checkDataKeys();
 
         // add constants
         const _constants = mapValues(constants, (value) => {
-            return {
-                enumerable: true,
-                configurable: true,
-                writable: false,
-                value,
-            };
+            return {enumerable: true, configurable: true, writable: false, value};
         });
 
         // 将常量赋值给Model实例
         Object.defineProperties(this, _constants);
 
-        // 将initData copy给实例，同时将其转变为observable
         extendObservable(this, initData);
 
         // 自动执行的函数map
         each(autorunMap, autorunFn => {
             autorun(autorunFn, this);
         });
+
+        // 监听state数据状态变化钩子
+        if (this._plugin.hooks.onStateChange.length) {
+            spy(this._plugin.use('onStateChange'));
+        }
     }
 
     getID() {
@@ -80,18 +77,6 @@ export default class MobxModel {
     }
     get middleware() {
         return this._middleware;
-    }
-
-    getActionState(actionName) {
-        if (!this[actionName]) {
-            throw new Error('[MobxModel] Undefined action: ', actionName);
-        }
-
-        if (!this._actionStates[actionName]) {
-            this.setActionState(actionName);
-        }
-
-        return this._actionStates[actionName];
     }
 
     toJS(key) {
@@ -114,10 +99,13 @@ export default class MobxModel {
             return parse(this[key]);
         }
 
-        return this._dataKeys.reduce((json, key) => {
-            json[key] = parse(this[key]);
-            return json;
-        }, {});
+        return this
+            ._dataKeys
+            .reduce((json, key) => {
+                json[key] = parse(this[key]);
+
+                return json;
+            }, {});
     }
 
     toJSON(key) {
@@ -129,9 +117,11 @@ export default class MobxModel {
     }
 
     each(fn) {
-        this._dataKeys.map((key) => {
-            fn(this[key], key, this);
-        });
+        this
+            ._dataKeys
+            .map((key) => {
+                fn(this[key], key, this);
+            });
     }
 
     toString() {
@@ -139,11 +129,13 @@ export default class MobxModel {
     }
 
     _checkDataKeys() {
-        this._dataKeys.forEach((dataKey) => {
-            if (this[dataKey]) {
-                throw new Error(`[MobxModel] Data key "${dataKey}" is defined in prototype methods.`);
-            }
-        });
+        this
+            ._dataKeys
+            .forEach((dataKey) => {
+                if (this[dataKey]) {
+                    throw new Error(`[MobxModel] Data key "${dataKey}" is defined in prototype methods.`);
+                }
+            });
     }
 
     set(key, val) {
@@ -157,6 +149,22 @@ export default class MobxModel {
         return this;
     }
 
+    getActionState(actionName) {
+        if (actionName.split('/') === -1) {
+            throw new Error(`[MobxModel] Please specify your model name as "model/action": ${actionName}`);
+        }
+
+        if (!this[actionName.split('/')[1]]) {
+            throw new Error(`[MobxModel] Undefined action: ${actionName}`);
+        }
+
+        if (!this._actionStates[actionName]) {
+            this.setActionState(actionName);
+        }
+
+        return this._actionStates[actionName];
+    }
+
     setActionState(actionName, val) {
         extendObservable(this._actionStates, {
             [actionName]: val || {
@@ -168,34 +176,46 @@ export default class MobxModel {
 }
 
 // 同步数据处理
-export function toMobxSyncActions(syncs) {
+export function toMobxSyncActions(name, syncs, plugin) {
     return mapValues(syncs, (actionFn, actionName) => {
         return function mobxAction(...actionArgs) {
-            return action(actionFn).apply(this, actionArgs);
+            // 执行钩子函数
+            const result = action(actionFn).apply(this, actionArgs);
+
+            if(plugin.hooks.onAction.length) {
+                plugin.use('onAction')({
+                    actionName,
+                    actionArgs,
+                    result,
+                });
+            }
+
+            return result;
         };
     });
 }
 
 // 对effects的处理
-export function toMobxAsyncActions(actions) {
+export function toMobxAsyncActions(modelName, actions) {
     // 其实就是对每一个开发者定义的Model中的action包装成mobxAction
     return mapValues(actions, (actionFn, actionName) => {
+        actionName = `${modelName}/${actionName}`;
+
         return function mobxAction(...actionArgs) {
             const actionContext = this;
 
             // 1. add loading state and save the pre error
             this.setActionState(actionName, {
                 loading: true,
-                error: this.getActionState(actionName).error
+                error: this
+                    .getActionState(actionName)
+                    .error
             });
 
             // 2. exec action with hooks
-            return this._middleware.execAction({
-                    actionFn: action(actionFn),
-                    actionName,
-                    actionArgs,
-                    actionContext
-                })
+            return this
+                ._middleware
+                .execAction({actionFn: action(actionFn), actionName, actionArgs, actionContext})
                 .then(payload => {
                     // 3. loaded success
                     this.setActionState(actionName, {
@@ -204,7 +224,8 @@ export function toMobxAsyncActions(actions) {
                     });
 
                     return payload;
-                }).catch(error => {
+                })
+                .catch(error => {
                     // 4. loaded error
                     this.setActionState(actionName, {
                         loading: false,

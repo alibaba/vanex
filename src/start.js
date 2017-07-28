@@ -6,11 +6,14 @@
 
 import React, { Component } from 'react';
 
+import Plugin from './plugin';
 import {Provider} from 'mobx-react';
 import VanexContext from './vanex-context';
 import VanexRelation from './vanex-relation';
 import middleware from './vanex-middleware';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
+
+const globalPlugin = new Plugin();
 
 var context;
 var ContainerComponent;
@@ -21,24 +24,16 @@ export default({
     component,
     models,
     container,
-    middlewares = [],
     relation = new VanexRelation
 }) => {
     started = true;
     
     ContainerComponent = component;
-        
-    if(!Array.isArray(middlewares)) {
-        middlewares = [middlewares];
-    }
-
-    middlewares.forEach(item => {
-        middleware.use(item);
-    });
 
     context = new VanexContext(models, {
         middleware,
         relation,
+        plugin: globalPlugin,
     });
 
     // 否则返回可执行组件
@@ -86,4 +81,17 @@ export function addModel(models, callback) {
     // 将context的data传递给ContainerComponent及其子组件
     // 目前是通过执行重新渲染的机制实现，考虑优化
     componentIns.forceUpdate(callback);
+}
+
+export function use(plugin) {
+    const {
+        onEffect = [],
+        ...restPlugin,
+    } = plugin;
+    
+    // 异步请求中间件
+    onEffect.forEach(item => middleware.use(item));
+
+    // 插件机制
+    globalPlugin.use(restPlugin);
 }

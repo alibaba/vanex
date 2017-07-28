@@ -3,8 +3,8 @@ import React, {
     PropTypes
 } from 'react';
 import {
-    observer,
     inject,
+    observer,
 } from '../../lib';
 
 @inject('user')
