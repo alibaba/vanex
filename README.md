@@ -383,9 +383,9 @@ export default {
         actionName,
         actionArgs,
         result) => {
-            console.log(`当前Action执行名字：${actionName}`);
-            console.log(`当前Action执行参数：${actionArgs}`);
-            console.log(`当前Action执行结果：${result}`);
+            console.log(`当前执行Action的名字：${actionName}`);
+            console.log(`当前执行Action的参数：${actionArgs}`);
+            console.log(`当前执行Action的结果：${result}`);
         }]
 };
 
