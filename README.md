@@ -2,7 +2,8 @@
 
 基于`mobx & mobx-react`的React store管理框架，提供简单快捷的开发范式。使用模式类似dva，但用起来比dva更简单，开发效率更高！  
 
-github地址：http://gitlab.alibaba-inc.com/vanex/vanex
+gitlab地址:  http://gitlab.alibaba-inc.com/vanex/vanex  
+example地址: http://gitlab.alibaba-inc.com/vanex/vanex/example  
 
 ## 特点
 
@@ -48,9 +49,6 @@ start({
 
 ```js
 import React, {Component, PropTypes} from 'react';
-
-// load middlewares
-import './middlewares';
 
 // components
 import UserLogin from './components/UserLogin';
@@ -300,7 +298,117 @@ class Applications extends Component {
 }
 ```
 
-## 开发组件
+## Vanex插件机制
+
+Vanex支持`插件`机制，使用的方式如下：
+```js
+import { start, use } from '@alife/vanex';
+
+import effectPlugin from './effect-plugin';
+
+use({
+    onEffect: effectPlugin,
+});
+
+// start代码
+```
+
+目前已经提供的插件列表如下：
+
+### onStateChange
+
+用于监听数据发生改变的时候的触发回调。格式如下：
+```js
+export default {
+    onStatehange: [event => {
+        console.log(event);
+    }]
+};
+```
+
+### onEffect
+
+用于处理`异步执行`执行`前(before)、后(after)、错误(error)`以及过滤哪些effects执行该回调，它在执行的时候其实是以中间件的形式来执行的。如果有类似于`每次请求都自带csrfToken`的需求，则可以在`before`钩子函数中组装。  
+
+具体使用如下：
+
+```js
+// Before exec action
+function preLogger({
+    type,
+    payload
+}) {
+    console.log(`[${type}] params: `, payload);
+
+    payload。csrfToken = 'xxx'; // 这里的更改会对请求参数生效
+
+    return payload;
+}
+
+// Action exec fail
+function errorLogger({
+    type,
+    payload
+}) {
+    console.log(`[${type}] error: `, payload.message);
+    return payload;
+}
+
+// After exec action
+function afterLogger({
+    type,
+    payload
+}) {
+    console.log(`[${type}] result: `, payload);
+    return payload;
+}
+
+export default {
+    filter({
+            type
+        }) {
+        return /^User/.test(type); // 只针对Model名字是User的进行下面钩子函数的执行
+    },
+    before: preLogger,
+    after: afterLogger,
+    error: errorLogger,
+};
+```
+
+### onAction
+
+用于在执行`syncs` Action之后触发。格式如下：
+
+```js
+export default {
+    onAction: [(
+        actionName,
+        actionArgs,
+        result) => {
+            console.log(`当前Action执行名字：${actionName}`);
+            console.log(`当前Action执行参数：${actionArgs}`);
+            console.log(`当前Action执行结果：${result}`);
+        }]
+};
+
+```
+
+### getActionState
+
+这个并不是Vanex组件，但是用于解决在组件中获取`当前model effects是否正在发送请求`的问题，而这个状态可以用于`控制Loading组件是否可见`。因为这种需求非常普遍，所以Vanex直接内置到内部实现中。使用示例如下：
+
+```js
+const {
+    user
+} = this.props;
+
+const {
+    loading: loginLoading,
+    error: loginError
+} = user.getActionState('user/login');
+```
+
+## 用于开发组件
 
 有时候，我们并不想执行页面渲染，而是用Vanex来开发一个组件，这时，还是可以使用`start` API，只要不传如`container`值，就会返回一个React Component。
 
@@ -314,7 +422,12 @@ import middlewares from './middlewares';
 
 import {
     start,
+    use,
 } from '@alife/vanex';
+
+use({
+    onEffect: middlewares
+});
 
 // model
 import user from './models/User';
@@ -330,7 +443,6 @@ const MyComponent = start({
         user,
         todos
     },
-    middlewares,
     relation
 });
 
