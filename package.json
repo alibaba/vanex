@@ -1,0 +1,37 @@
+{
+  "name": "vanex",
+  "version": "0.1.1",
+  "description": "Development library based on mobx.",
+  "main": "./index.js",
+  "scripts": {
+    "build": "rimraf lib && babel src --out-dir lib --watch"
+  },
+  "private": false,
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abell123456/vanex.git"
+  },
+  "dependencies": {
+    "invariant": "^2.2.2",
+    "mobx": "^3.x",
+    "mobx-react": "^4.x",
+    "react": "^15.x",
+    "react-dom": "^15.x"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-eslint": "^6.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-istanbul": "^2.0.1",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "~6.5.0",
+    "babel-register": "^6.14.0",
+    "babel-runtime": "^6.23.0",
+    "rimraf": "^2.6.1"
+  },
+  "author": "abell123456",
+  "license": "MIT"
+}

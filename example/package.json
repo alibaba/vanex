@@ -1,0 +1,28 @@
+{
+  "name": "fist-traverse",
+  "description": "浏览器中执行，方便调试",
+  "version": "0.0.1",
+  "author": "xiangzhong.wxz@alibaba-inc.com",
+  "keywords": [],
+  "devDependencies": {
+    "atool-build": "^0.9.3",
+    "css-loader": "^0.25.0",
+    "dora": "0.x",
+    "dora-plugin-proxy": "^0.x",
+    "dora-plugin-webpack": "0.x",
+    "dora-plugin-webpack-hmr": "^0.x",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "less-loader": "^2.2.3",
+    "node-sass": "^4.0.0",
+    "react-addons-transition-group": "^15.4.1",
+    "rimraf": "^2.5.4",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1"
+  },
+  "scripts": {
+    "start": "dora --plugins \"proxy,webpack?disableNpmInstall,webpack-hmr\""
+  },
+  "engine": {
+    "node": ">=6.0.0"
+  }
+}
