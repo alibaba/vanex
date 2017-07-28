@@ -306,9 +306,7 @@ import { start, use } from '@alife/vanex';
 
 import effectPlugin from './effect-plugin';
 
-use({
-    onEffect: effectPlugin,
-});
+use(effectPlugin);
 
 // start代码
 ```
