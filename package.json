@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git@gitlab.alibaba-inc.com:vanex/vanex.git"
   },
+  "publishConfig": {
+    "registry": "http://registry.npm.alibaba-inc.com"
+  },
   "dependencies": {
     "invariant": "^2.2.2",
     "is-plain-object": "^2.0.4",
