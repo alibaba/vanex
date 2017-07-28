@@ -320,7 +320,7 @@ use({
 用于监听数据发生改变的时候的触发回调。格式如下：
 ```js
 export default {
-    onStatehange: [event => {
+    onStateChange: [event => {
         console.log(event);
     }]
 };
