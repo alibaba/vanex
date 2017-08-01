@@ -12,9 +12,6 @@ import {
 
 let uuid = 0;
 
-var mobxSyncs;
-var mobxAsyncs;
-
 export default function createModel({
     name,
     data = {},
@@ -39,9 +36,8 @@ export default function createModel({
             throw new Error('[createModel] `data` can not be a function, please use `init` instead.');
         }
 
-
-        mobxSyncs = mobxSyncs || toMobxSyncActions(name, syncs, plugin);
-        mobxAsyncs = mobxAsyncs || toMobxAsyncActions(name, effects, plugin);
+        const mobxSyncs = toMobxSyncActions(name, syncs, plugin);
+        const mobxAsyncs = toMobxAsyncActions(name, effects, plugin);
 
         Object.assign(this, mobxSyncs, mobxAsyncs);
 
@@ -69,12 +65,12 @@ export default function createModel({
 
         return res;
     }
-    
+
     MobxModel.uuid = ++uuid;
     MobxModel.syncs = syncs;
     MobxModel.effects = effects;
     MobxModel.autorun = autorun;
-    
+
     inherits(MobxModel, Parent);
 
     // Define MobxModel name

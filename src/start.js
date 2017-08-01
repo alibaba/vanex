@@ -16,25 +16,27 @@ import { render } from 'react-dom';
 const globalPlugin = new Plugin();
 
 var context;
-var ContainerComponent;
 var componentIns;
 var started = false;
 
 export default({
-    component,
+    component: ContainerComponent,
     models,
     container,
     relation = new VanexRelation
 }) => {
     started = true;
-    
-    ContainerComponent = component;
 
-    context = new VanexContext(models, {
-        middleware,
-        relation,
-        plugin: globalPlugin,
-    });
+    // 保证context只实例化一次
+    if(context) {
+        addModel(models);
+    } else {
+        context = new VanexContext(models, {
+            middleware,
+            relation,
+            plugin: globalPlugin,
+        });
+    }
 
     // 否则返回可执行组件
     class VanexComponent extends Component {
@@ -46,7 +48,7 @@ export default({
 
         render() {
             return (
-                <Provider ref="provider" {...context.data}>
+                <Provider {...context.data}>
                     <ContainerComponent {...this.props.data} />
                 </Provider>
             );
@@ -77,10 +79,6 @@ export function addModel(models, callback) {
 
     // 将models添加进context
     context.addModel(models);
-
-    // 将context的data传递给ContainerComponent及其子组件
-    // 目前是通过执行重新渲染的机制实现，考虑优化
-    componentIns.forceUpdate(callback);
 }
 
 export function use(plugin) {
@@ -88,7 +86,7 @@ export function use(plugin) {
         onEffect = [],
         ...restPlugin,
     } = plugin;
-    
+
     // 异步请求中间件
     onEffect.forEach(item => middleware.use(item));
 

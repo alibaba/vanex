@@ -31,4 +31,10 @@ export default class App extends Component {
             </div>
         );
     }
+
+    shouldComponentUpdate(nextProps) {
+        console.log('nextProps:', nextProps);
+
+        return false;
+    }
 }

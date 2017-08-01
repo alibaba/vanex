@@ -10,7 +10,7 @@ import middlewares from './middlewares';
 // relation
 import relation from './relations';
 import { render } from 'react-dom';
-import todos from './models/Todos';
+
 // model
 import user from './models/User';
 
@@ -23,7 +23,6 @@ start({
     component: App,
     models: {
         user,
-        todos
     },
     relation,
     container: '#root'

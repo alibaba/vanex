@@ -6,9 +6,27 @@ import {
     addModel,
     inject,
     observer,
+    Provider
 } from '../../lib';
 
 import newAdded from '../models/newAdded';
+
+
+// 测试多个model的情形
+import {
+    start,
+    use,
+} from '../../lib';
+
+import todos from '../models/Todos';
+import TodosCom from './Todos';
+
+const LastTodoCom = start({
+    component: TodosCom,
+    models: {
+        todos,
+    },
+});
 
 @inject('user')
 @observer
@@ -44,13 +62,15 @@ export default class UserLogin extends Component {
                         : <span style={{ color: 'red' }}>{(loginError && loginError.message) || errorVal}</span>
                     }
                 </div>
+
+                <LastTodoCom />
             </div>
         );
     }
 
     componentDidMount() {
-        addModel({
-            newAdded,
-        });
+        // addModel({
+        //     newAdded,
+        // });
     }
 }

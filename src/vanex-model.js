@@ -7,7 +7,12 @@ import {
     spy,
     toJS
 } from 'mobx';
-import {deepMapValues, each, isRegExp, mapValues} from './utils';
+import {
+    deepMapValues,
+    each,
+    isRegExp,
+    mapValues
+} from './utils';
 
 let count = 0;
 
@@ -25,7 +30,7 @@ export default class MobxModel {
         // 保存当前传进来的中间件
         this._middleware = middleware;
         this._plugin = plugin;
-        
+
         this._id = count++;
 
         Object
@@ -45,7 +50,12 @@ export default class MobxModel {
 
         // add constants
         const _constants = mapValues(constants, (value) => {
-            return {enumerable: true, configurable: true, writable: false, value};
+            return {
+                enumerable: true,
+                configurable: true,
+                writable: false,
+                value
+            };
         });
 
         // 将常量赋值给Model实例
@@ -182,7 +192,7 @@ export function toMobxSyncActions(name, syncs, plugin) {
             // 执行钩子函数
             const result = action(actionFn).apply(this, actionArgs);
 
-            if(plugin.hooks.onAction.length) {
+            if (plugin.hooks.onAction.length) {
                 plugin.use('onAction')({
                     actionName,
                     actionArgs,
@@ -215,7 +225,12 @@ export function toMobxAsyncActions(modelName, actions) {
             // 2. exec action with hooks
             return this
                 ._middleware
-                .execAction({actionFn: action(actionFn), actionName, actionArgs, actionContext})
+                .execAction({
+                    actionFn: action(actionFn),
+                    actionName,
+                    actionArgs,
+                    actionContext
+                })
                 .then(payload => {
                     // 3. loaded success
                     this.setActionState(actionName, {

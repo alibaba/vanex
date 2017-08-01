@@ -24,7 +24,7 @@ export default class MobxContext {
         this._middleware = opts.middleware || globalMiddleware;
         this._relation = opts.relation || new MobxRelation;
         this._plugin = opts.plugin;
-        
+
         this._models = {};
 
         this.models = models;
@@ -45,7 +45,7 @@ export default class MobxContext {
         Object.keys(models).some(key => {
             if(key in this._models) {
                 console.error(`[vanex]: You have already existed the same model key: '${key}'`);
-                
+
                 return true;
             }
         });
@@ -69,7 +69,7 @@ export default class MobxContext {
                 // update model's middleware
                 Model.middleware = this._middleware;
                 Model._plugin = this._plugin;
-                
+
                 return Model;
             }
         }));
@@ -77,7 +77,7 @@ export default class MobxContext {
 
     addModel(models) {
         this.models = models;
-        
+
         this.setData(models);
     }
 
@@ -97,7 +97,7 @@ export default class MobxContext {
                     context: this,
                 });
             });
-            
+
             return arg.payload;
         };
 
