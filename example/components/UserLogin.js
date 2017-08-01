@@ -63,7 +63,7 @@ export default class UserLogin extends Component {
                     }
                 </div>
 
-                <LastTodoCom />
+                <LastTodoCom ref='todos' />
             </div>
         );
     }
@@ -72,5 +72,7 @@ export default class UserLogin extends Component {
         // addModel({
         //     newAdded,
         // });
+
+        console.log('123:', 'add' in this.refs.todos.mobxStores.todos);
     }
 }

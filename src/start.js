@@ -16,7 +16,6 @@ import { render } from 'react-dom';
 const globalPlugin = new Plugin();
 
 var context;
-var componentIns;
 var started = false;
 
 export default({
@@ -42,14 +41,16 @@ export default({
     class VanexComponent extends Component {
         constructor(props, context) {
             super(props, context);
+        }
 
-            componentIns = this;
+        get mobxStores() {
+            return this.refs['_conatinerComponent'].context.mobxStores;
         }
 
         render() {
             return (
                 <Provider {...context.data}>
-                    <ContainerComponent {...this.props.data} />
+                    <ContainerComponent ref='_conatinerComponent' {...this.props.data} />
                 </Provider>
             );
         }
