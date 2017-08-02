@@ -14,6 +14,10 @@ import { render } from 'react-dom';
 // model
 import user from './models/User';
 
+import vanexReduxDevtools from '@alife/vanex-redux-devtools';
+
+use(vanexReduxDevtools);
+
 use({
     onEffect: middlewares,
     // onAction: middlewares,
