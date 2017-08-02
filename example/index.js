@@ -15,7 +15,9 @@ import { render } from 'react-dom';
 import user from './models/User';
 
 use({
-    onEffect: middlewares
+    onEffect: middlewares,
+    // onAction: middlewares,
+    onStateChange: event => {console.log(event)},
 });
 
 // 直接渲染

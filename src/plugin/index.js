@@ -33,8 +33,8 @@ class Plugin {
 
     apply(key, defaultHandler) {
         const hooks = this.hooks;
-        const validApplyHooks = ['onError', 'onHmr'];
-        invariant(~validApplyHooks.indexOf(key), `plugin.apply: hook ${key} cannot be applied`);
+        const validApplyHooks = ['onError', 'onStateChange', 'onAction'];
+        invariant(validApplyHooks.indexOf(key) > -1, `plugin.apply: hook ${key} cannot be applied`);
         const fns = hooks[key];
 
         return (...args) => {

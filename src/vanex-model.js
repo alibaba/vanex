@@ -70,7 +70,7 @@ export default class MobxModel {
 
         // 监听state数据状态变化钩子
         if (this._plugin.hooks.onStateChange.length) {
-            spy(this._plugin.use('onStateChange'));
+            spy(this._plugin.apply('onStateChange'));
         }
     }
 
@@ -193,7 +193,7 @@ export function toMobxSyncActions(name, syncs, plugin) {
             const result = action(actionFn).apply(this, actionArgs);
 
             if (plugin.hooks.onAction.length) {
-                plugin.use('onAction')({
+                plugin.apply('onAction')({
                     actionName,
                     actionArgs,
                     result,
