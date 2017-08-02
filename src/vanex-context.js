@@ -61,7 +61,8 @@ export default class MobxContext {
 
             // Get a class
             if (isMobxModelClass(Model)) {
-                return new Model(null, this._middleware, this._plugin);
+                const result = new Model(null, this._middleware, this._plugin);
+                return result;
             }
 
             // Get an instance
@@ -69,7 +70,6 @@ export default class MobxContext {
                 // update model's middleware
                 Model.middleware = this._middleware;
                 Model._plugin = this._plugin;
-
                 return Model;
             }
         }));

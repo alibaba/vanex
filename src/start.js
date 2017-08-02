@@ -48,8 +48,10 @@ export default({
         }
 
         render() {
+            const data = globalPlugin.apply('beforeConnectStore')(context.data) || context.data;
+
             return (
-                <Provider {...context.data}>
+                <Provider {...data}>
                     <ContainerComponent ref='_conatinerComponent' {...this.props} />
                 </Provider>
             );
