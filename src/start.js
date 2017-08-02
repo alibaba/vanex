@@ -50,7 +50,7 @@ export default({
         render() {
             return (
                 <Provider {...context.data}>
-                    <ContainerComponent ref='_conatinerComponent' {...this.props.data} />
+                    <ContainerComponent ref='_conatinerComponent' {...this.props} />
                 </Provider>
             );
         }
