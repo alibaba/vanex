@@ -68,6 +68,7 @@ export default class MobxModel {
             autorun(autorunFn, this);
         });
 
+
         // 监听state数据状态变化钩子
         if (this._plugin.hooks.onStateChange.length) {
             spy(this._plugin.apply('onStateChange'));
@@ -149,13 +150,25 @@ export default class MobxModel {
     }
 
     set(key, val) {
+        if (this._plugin.hooks.beforeSet.length) {
+            let change = {};
+            if (typeof key === 'string') {
+                change[key] = val;
+            } else {
+                change = key;
+            }
+            
+            this._plugin.apply('beforeSet')({
+                change,
+                object: this,
+            });
+        }
         if (typeof key === 'string') {
             this[key] = val;
         } else {
             // 运行一次，在给实例同步的同时，触发React Component的重新渲染
             runInAction(() => deepMapValues(key, item => item, this));
         }
-
         return this;
     }
 

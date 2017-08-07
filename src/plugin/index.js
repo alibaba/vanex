@@ -13,6 +13,7 @@ class Plugin {
             onEffect: [],
             onError: [],
             beforeConnectStore: [],
+            beforeSet: [],
         };
     }
 
@@ -34,7 +35,7 @@ class Plugin {
 
     apply(key, defaultHandler) {
         const hooks = this.hooks;
-        const validApplyHooks = ['onError', 'onStateChange', 'onAction', 'beforeConnectStore'];
+        const validApplyHooks = ['onError', 'onStateChange', 'onAction', 'beforeConnectStore', 'beforeSet'];
         invariant(validApplyHooks.indexOf(key) > -1, `plugin.apply: hook ${key} cannot be applied`);
         const fns = hooks[key];
 

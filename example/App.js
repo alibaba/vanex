@@ -19,15 +19,23 @@ export default class App extends Component {
         const {user} = this.props;
 
         console.log('user.isLogin:', user.isLogin);
-
+        const click = () => {
+            user.counts = user.counts + 1;
+            console.log(user.counts)
+        }
         if (user.isLogin !== true) {
-            return <UserLogin />;
+            return <div>
+                <UserLogin />
+                <button type="button" style={{'font-size': '300px'}} onClick={click}>{user.counts}</button>
+            </div>;
+
         }
 
         return (
             <div>
                 <UserDetail />
                 <Todos />
+                <button type="button" style={{'font-size': '300px'}} onClick={click}>{user.counts}</button>
             </div>
         );
     }

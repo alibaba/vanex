@@ -3,7 +3,6 @@ const STORE_KEY = 'vanex';
 
 export default {
     name: 'User',
-
     constants: {
         // read only
         type: 'USER',
@@ -18,6 +17,7 @@ export default {
         loginError: '',
         habits: [],
         from: null,
+        counts: 0,
     },
 
     init() {

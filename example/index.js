@@ -21,7 +21,7 @@ use(vanexReduxDevtools);
 use({
     onEffect: middlewares,
     // onAction: middlewares,
-    onStateChange: event => {console.log(event)},
+    // onStateChange: event => {console.log(event)},
     // beforeConnectStore: store => {
     // 	const result = {};
     // 	Object.keys(store).forEach(item => {
