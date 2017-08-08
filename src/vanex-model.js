@@ -5,7 +5,8 @@ import {
     isObservableArray,
     runInAction,
     spy,
-    toJS
+    toJS,
+    computed,
 } from 'mobx';
 import {
     deepMapValues,
@@ -62,6 +63,13 @@ export default class MobxModel {
         Object.defineProperties(this, _constants);
 
         extendObservable(this, initData);
+
+        // 初始化 computed
+
+        const computedMap = this.computed || [];
+        // const mobxComputeds = mapValues(computedMap, value => computed(value));
+
+        extendObservable(this, computedMap);
 
         // 自动执行的函数map
         each(autorunMap, autorunFn => {
@@ -196,6 +204,7 @@ export default class MobxModel {
             }
         });
     }
+
 }
 
 // 同步数据处理
