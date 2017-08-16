@@ -52,7 +52,7 @@ export default({
             let form = globalPlugin.get('form');
 
             if(typeof form === 'function') {
-                form = form(context);
+                form = form(context._data || {});
             }
 
             return (
