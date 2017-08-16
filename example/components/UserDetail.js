@@ -23,6 +23,8 @@ export default class UserDetail extends Component {
             <div className="container">
                 <div>
                     Welcome! {this.props.user.username}
+
+                    <br />set子属性测试： {this.props.user.user.name}
                 </div>
                 <ul>
                     <li><label>FROM: </label>{this.props.user.from}</li>

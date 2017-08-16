@@ -49,9 +49,10 @@ export default({
 
         render() {
             const data = globalPlugin.apply('beforeConnectStore')(context.data) || context.data;
+            const form = globalPlugin.get('form');
 
             return (
-                <Provider {...data}>
+                <Provider {...data} form={form}>
                     <ContainerComponent ref='_conatinerComponent' {...this.props} />
                 </Provider>
             );

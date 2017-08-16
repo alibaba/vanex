@@ -24,7 +24,7 @@ class Plugin {
         for (const key in plugin) {
             if (Object.prototype.hasOwnProperty.call(plugin, key)) {
                 invariant(hooks[key], `plugin.use: unknown plugin property: ${key}`);
-                if (key === 'extraEnhancers') {
+                if (['extraEnhancers', 'form'].includes(key)) {
                     hooks[key] = plugin[key];
                 } else {
                     hooks[key].push(plugin[key]);

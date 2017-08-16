@@ -18,6 +18,9 @@ export default {
         habits: [],
         from: null,
         counts: 0,
+        user: {
+            name: ''
+        }
     },
 
     init() {
@@ -54,6 +57,7 @@ export default {
                     loginError: null,
                     username,
                     password,
+                    'user.name': username
                 };
 
                 this.set(obj);

@@ -4,6 +4,7 @@ import invariant from 'invariant';
 import {
     observable,
 } from 'mobx';
+import { set } from 'jsonuri';
 
 /**
  * Applies a function to every key-value pair inside an object.
@@ -27,28 +28,11 @@ export function deepMapValues(obj, fn, res = {}) {
         let val = obj[key];
 
         let keys = key.split('.');
+        let len = keys.length;
 
-        if(keys.length > 1) {
-            let len = keys.length;
-            let lastKey = keys[len - 1];
-            let lastRes;
+        let lastKey = keys[len - 1];
 
-            for(let i = 0; i < len - 1; i++) {
-                let curKey = keys[i];
-
-                if(lastRes && (curKey in lastRes)) {
-                    lastRes = lastRes[curKey]; // 让lastRes取到最后一个值
-                } else if(curKey in result) {
-                    lastRes = result[curKey]; // 让lastRes取到最后一个值
-                } else {
-                    invariant(false, `[Vanex] ${curKey}属性不存在，没法直接设置。`);
-                }
-            }
-
-            lastRes[lastKey] = fn(val, lastKey);
-        } else {
-            result[key] = fn(val, key);
-        }
+        set(result, keys.join('/'), fn(val, lastKey));
 
         return result;
     }, res);

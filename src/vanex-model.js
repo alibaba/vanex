@@ -165,7 +165,7 @@ export default class MobxModel {
             } else {
                 change = key;
             }
-            
+
             this._plugin.apply('beforeSet')({
                 change,
                 object: this,
