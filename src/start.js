@@ -49,7 +49,11 @@ export default({
 
         render() {
             const data = globalPlugin.apply('beforeConnectStore')(context.data) || context.data;
-            const form = globalPlugin.get('form');
+            let form = globalPlugin.get('form');
+
+            if(typeof form === 'function') {
+                form = form(context);
+            }
 
             return (
                 <Provider {...data} {...form}>
