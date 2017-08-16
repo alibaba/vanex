@@ -14,6 +14,8 @@ class Plugin {
             onError: [],
             beforeConnectStore: [],
             beforeSet: [],
+            form: {},
+            extraEnhancers: {},
         };
     }
 
