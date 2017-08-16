@@ -52,7 +52,7 @@ export default({
             const form = globalPlugin.get('form');
 
             return (
-                <Provider {...data} form={form}>
+                <Provider {...data} {...form}>
                     <ContainerComponent ref='_conatinerComponent' {...this.props} />
                 </Provider>
             );
