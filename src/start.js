@@ -1,4 +1,8 @@
 /**
+ * Copyright (C) 2017-2017 Alibaba Group Holding Limited
+*/
+
+/**
  * Tips：
  * 如果start没有配置container选项，则返回一个可渲染的组件；
  * 如果传递了container，则执行渲染。

@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) 2017-2017 Alibaba Group Holding Limited
+ * Copyright (C) 2017-2017 刘文成 (wencheng.lwc@antfin.com)
+*/
+
 import {compose, isRegExp} from './utils';
 import {autorun} from 'mobx';
 

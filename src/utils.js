@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2017-2017 Alibaba Group Holding Limited
+*/
+
 const toString = Object.prototype.toString;
 
 import invariant from 'invariant';

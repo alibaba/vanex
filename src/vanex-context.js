@@ -1,4 +1,9 @@
 /**
+ * Copyright (C) 2017-2017 Alibaba Group Holding Limited
+ * Copyright (C) 2017-2017 刘文成 (wencheng.lwc@antfin.com)
+*/
+
+/**
  * MobxContent:在执行start初始化应用的时候，会:
  * 1、将传递进来的配置项（Model/Middleware/Relation保存处理）；
  * 2、实例化传递进来的Model数据，并将middleware作为参数传进去；

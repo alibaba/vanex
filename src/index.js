@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2017-2017 Alibaba Group Holding Limited
+*/
+
 import * as mobx from 'mobx';
 import * as mobxReact from 'mobx-react';
 

@@ -1,4 +1,9 @@
 /**
+ * Copyright (C) 2017-2017 Alibaba Group Holding Limited
+ * Copyright (C) 2017-2017 陈成 (yunqian@antfin.com)
+*/
+
+/**
  * Vanex插件机制
  */
 
