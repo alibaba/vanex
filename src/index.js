@@ -10,6 +10,7 @@ import start, { addModel, use } from './start';
 import Relation from './vanex-relation';
 import createModel from './create-model';
 import extendModel from './extend-model';
+import vanex from './vanex-decorator';
 
 export default {
     ...mobx,
@@ -20,4 +21,5 @@ export default {
     Relation,
     addModel,
     use,
+    vanex,
 };
