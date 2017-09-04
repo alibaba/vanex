@@ -15,7 +15,7 @@ function wrapComponentClass(injectModels, autoruns, componentClass) {
         const originWillUnmount = componentClass.prototype.componentWillUnmount;
         const cancels = [];
         componentClass.prototype.componentWillMount = function() {
-            autoruns.forEach(funcname => cancels.push(autorun(this[funcname])));
+            autoruns.forEach(funcname => cancels.push(autorun(this[funcname].bind(this))));
             originWillMount && originWillMount.call(this);
         };
         componentClass.prototype.componentWillUnmount = function() {

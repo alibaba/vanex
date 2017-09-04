@@ -1,7 +1,7 @@
 /* global __dirname, require, module*/
 // vanex 的 umd 打包
 // 暂时是为了类似 jsfiddle 等平台能够演示代码，不建议生产环境使用
-// 会把依赖都直接打包进去，产生 lib/vanex.pack.min.js
+// 会把除了 React 和 ReactDOM 外的依赖都直接打包进去，产生 lib/vanex.pack.min.js
 // !!! 不建议在生产环境使用
 
 const webpack = require('webpack');
@@ -48,6 +48,20 @@ const config = {
     extensions: ['.json', '.js']
   },
   plugins: plugins,
+  externals: {
+      react: {
+          commonjs: 'react',
+          commonjs2: 'react',
+          amd: 'React',
+          root: 'React',
+      },
+      'react-dom': {
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+        amd: 'ReactDOM',
+        root: 'ReactDOM',
+      }
+  },
 };
 
 module.exports = config;
