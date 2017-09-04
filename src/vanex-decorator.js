@@ -26,12 +26,18 @@ function wrapComponentClass(injectModels, autoruns, componentClass) {
 
     // 劫持组件的构造函数把注入到 props 中的 model 塞到 this 中
     // 推荐使用 this.modelxxx 来访问 model，避免整个 props 被依赖收集
-    const originComponetClass = componentClass;
-    componentClass = function() {
-        originComponetClass.prototype.constructor.apply(this, arguments);
-        injectModels.forEach(model => this[model] = this.props[model]);
+    // 纯函数组件不需要做这个工作
+    if (componentClass.prototype && componentClass.prototype.render) {
+        // 非纯函数组件肯定会在原型链上有 render
+        const originComponetClass = componentClass;
+        function newComponentClass(props) {
+            const comp = new originComponetClass(...arguments);
+            injectModels.forEach(model => comp[model] = props[model]); 
+            return comp;
+        }
+        newComponentClass.prototype = originComponetClass.prototype;
+        componentClass = newComponentClass;
     }
-    componentClass.prototype = originComponetClass.prototype;
 
     // 简化原有的 @inject()@observer 组合
     componentClass = inject(stores => {

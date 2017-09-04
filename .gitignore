@@ -8,3 +8,4 @@ _book
 # ignore lib dir
 /lib/
 .build
+./lib
