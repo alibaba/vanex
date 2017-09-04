@@ -56,11 +56,23 @@ function wrapComponentClass(injectModels, autoruns, componentClass) {
 // 和
 // @vanex('modelx')
 // class Component {}
+// 对于纯函数组件
+// const Comp = {
+//    @vanex('modelx')
+//    Comp() {
+// 
+//    }   
+// }
 const vanex = (...injectModels) => (...autorunOrComponentClass) => {
-    if (typeof autorunOrComponentClass[0] === 'function') {
+    const firstType = typeof autorunOrComponentClass[0];
+    if (firstType === 'function') {
         // 第二个参数就是组件了
         return wrapComponentClass(injectModels, null, autorunOrComponentClass[0]);
-    } else {
+    } else if (firstType === 'object') {
+        // 对方法使用了注解，纯函数组件
+        const pureComponent = Object.values(autorunOrComponentClass[0])[0];
+        return wrapComponentClass(injectModels, null, pureComponent);
+    } else if (firstType === 'string' || firstType === 'array') {
         // 第二个参数是 autorun，返回函数继续接受第三个参数
         return componentClass => wrapComponentClass(injectModels, autorunOrComponentClass, componentClass);
     }
