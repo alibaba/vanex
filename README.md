@@ -1,4 +1,4 @@
-# @alife/vanex
+# vanex
 
 基于`mobx & mobx-react`的React store管理框架，提供简单快捷的开发范式。使用模式类似dva，但用起来比dva更简单，开发效率更高！  
 
@@ -19,7 +19,7 @@ import App from './App';
 
 import {
     start,
-} from '@alife/vanex';
+} from 'vanex';
 
 // model
 import user from './models/User';
@@ -58,7 +58,7 @@ import Todos from './components/Todos';
 import {
     inject,
     observer,
-} from '@alife/vanex';
+} from 'vanex';
 
 // 注意先observer，后inject
 @inject('user')
@@ -94,7 +94,7 @@ import App from './App';
 
 import {
     start,
-} from '@alife/vanex';
+} from 'vanex';
 
 // model
 import user from './models/User';
@@ -114,7 +114,7 @@ start({
 import {
     inject,
     observer,
-} from '@alife/vanex';
+} from 'vanex';
 
 @inject(
     stores => ({
@@ -277,7 +277,7 @@ this.set({
 
 如下，简单直接：
 ```js
-import { inject, observer } from '@alife/vanex';
+import { inject, observer } from 'vanex';
 
 @inject('applications')
 @observer
@@ -302,7 +302,7 @@ class Applications extends Component {
 
 Vanex支持`插件`机制，使用的方式如下：
 ```js
-import { start, use } from '@alife/vanex';
+import { start, use } from 'vanex';
 
 import effectPlugin from './effect-plugin';
 
@@ -421,7 +421,7 @@ import middlewares from './middlewares';
 import {
     start,
     use,
-} from '@alife/vanex';
+} from 'vanex';
 
 use({
     onEffect: middlewares
