@@ -5,7 +5,6 @@
   "author": "xiangzhong.wxz@alibaba-inc.com",
   "keywords": [],
   "devDependencies": {
-    "@alife/vanex-redux-devtools": "^0.0.3",
     "atool-build": "^0.9.3",
     "css-loader": "^0.25.0",
     "dora": "0.x",
@@ -27,6 +26,5 @@
     "node": ">=6.0.0"
   },
   "dependencies": {
-    "@alife/vanex-redux-devtools": "^0.0.3"
   }
 }
