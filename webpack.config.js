@@ -32,7 +32,7 @@ const config = {
     filename: outputFile,
     library: firstUpperCase(libraryName),
     libraryTarget: 'umd',
-    umdNamedDefine: true
+    // umdNamedDefine: true
   },
   module: {
     rules: [
@@ -52,13 +52,13 @@ const config = {
       react: {
           commonjs: 'react',
           commonjs2: 'react',
-          amd: 'React',
+          amd: 'react',
           root: 'React',
       },
       'react-dom': {
         commonjs: 'react-dom',
         commonjs2: 'react-dom',
-        amd: 'ReactDOM',
+        amd: 'react-dom',
         root: 'ReactDOM',
       }
   },
