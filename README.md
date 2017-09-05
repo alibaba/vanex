@@ -3,6 +3,7 @@
 基于`mobx & mobx-react`的React store管理框架，提供简单快捷的开发范式。使用模式类似dva，但用起来比dva更简单，开发效率更高！  
 
 文档地址：https://alibaba.github.io/vanex/
+
 example地址: https://github.com/alibaba/vanex/tree/master/example
 
 ## 特点
