@@ -6,3 +6,5 @@ coverage
 _book
 .idea
 example
+.babelrc 
+.build

@@ -1,9 +1,9 @@
 {
   "name": "vanex",
-  "version": "1.0.2",
+  "version": "1.0.8",
   "description": "Development library based on mobx.",
   "main": "./lib/index.js",
-  "browser": "./lib/vanex.pack.min.js",
+  "react-native": "./lib/index.native.js",
   "unpkg": "./lib/vanex.pack.min.js",
   "scripts": {
     "build": "rimraf lib && babel src --out-dir lib",
@@ -30,9 +30,7 @@
     "is-plain-object": "^2.0.4",
     "jsonuri": "^1.5.13",
     "mobx": "^3.x",
-    "mobx-react": "^4.x",
-    "react": "^15.x",
-    "react-dom": "^15.x"
+    "mobx-react": "^4.x"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
@@ -44,6 +42,8 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "~6.5.0",
     "babel-register": "^6.14.0",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "react": "^15.x",
+    "react-dom": "^15.x"
   }
 }
