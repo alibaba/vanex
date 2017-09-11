@@ -9,4 +9,27 @@ Vanex 是基于 mobx 的 React 数据流管理框架，旨在借助 mobx 提供�
 
 [https://alibaba.github.io/vanex/](https://alibaba.github.io/vanex/)
 
-# 交流
+# Quick Start
+
+Vanex 提供两个简洁的 API：@vanex 和 start
+
+```js
+import React from 'react';
+import { vanex, start } from 'vanex';
+
+const Model = {};
+
+@vanex('Model')
+class Comp extends React.Component{
+}
+
+start({
+    component: Comp,
+    container: '#root',
+    models: {
+        Model,
+    }
+});
+```
+
+See more: [https://alibaba.github.io/vanex/quick-start.html](https://alibaba.github.io/vanex/quick-start.html)
