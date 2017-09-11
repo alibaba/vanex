@@ -1,0 +1,324 @@
+<body>
+    <link href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/prism/9000.0.1/themes/prism.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/prism/9000.0.1/prism.min.js"></script>
+    
+    
+    <script src="https://cdn.bootcss.com/babel-polyfill/7.0.0-alpha.20/polyfill.min.js"></script>
+    <script src="https://cdn.bootcss.com/require.js/2.3.5/require.min.js"></script>
+    
+    <script type="es5-code">
+    requirejs(['react', 'vanex'], function (_react, _vanex) {
+  'use strict';
+
+  var _react2 = _interopRequireDefault(_react);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _createClass = function () {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+
+    return function (Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  }();
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var _dec, _class;
+
+  var countModel = {
+    name: 'countModel',
+    data: {
+      counts: 0
+    },
+    syncs: {
+      inc: function inc() {
+        this.counts++;
+      }
+    }
+  };
+
+  var CountComponent = (_dec = (0, _vanex.vanex)('countModel'), _dec(_class = function (_React$Component) {
+    _inherits(CountComponent, _React$Component);
+
+    function CountComponent(props, context) {
+      _classCallCheck(this, CountComponent);
+
+      var _this = _possibleConstructorReturn(this, (CountComponent.__proto__ || Object.getPrototypeOf(CountComponent)).call(this, props, context));
+
+      _this.clickHandler = _this.clickHandler.bind(_this);
+      return _this;
+    }
+
+    _createClass(CountComponent, [{
+      key: 'clickHandler',
+      value: function clickHandler() {
+        // 可以调用 model 的方法触发数据改变
+        this.countModel.inc();
+        // 也可以直接修改 model 中的值
+        // this.countModel.counts ++;
+      }
+    }, {
+      key: 'render',
+      value: function render() {
+        // 可以直接通过 this.countModel 访问被 @vanex 注入的 countModel
+        // 也可以通过 this.props.countModel 访问，但是除非是纯函数组件否则推荐通过 this 访问
+        return _react2.default.createElement(
+          'button',
+          { onClick: this.clickHandler },
+          'Click ',
+          this.countModel.counts
+        );
+      }
+    }]);
+
+    return CountComponent;
+  }(_react2.default.Component)) || _class);
+
+  var Home = function (_React$Component2) {
+    _inherits(Home, _React$Component2);
+
+    function Home() {
+      _classCallCheck(this, Home);
+
+      return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+    }
+
+    _createClass(Home, [{
+      key: 'render',
+      value: function render() {
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h1',
+            null,
+            'HomePage'
+          ),
+          _react2.default.createElement(CountComponent, null)
+        );
+      }
+    }]);
+
+    return Home;
+  }(_react2.default.Component);
+
+  (0, _vanex.start)({
+    component: Home,
+    container: '#mountNode',
+    models: {
+      // 注册模型
+      countModel: countModel
+    }
+  });
+});
+    </script>
+    <style>
+    button {
+  width: 100px;
+  height: 100px;
+}
+    html {
+        overflow-y: hidden;
+    }
+    #__tabs__ {
+        height: 100%;
+        border: none;
+    }
+
+    #__js_tab__ pre, #__css_tab__ pre {
+        white-space: inherit;
+    }
+
+    #__js_tab__, #__css_tab__ {
+        height: 90%;
+        overflow-y: scroll;
+    }
+    
+    #__tabs__ .ui-widget-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+    #__tabs__>div {
+        margin-top: 2em;
+    }
+    </style> 
+
+    <a style="position: fixed;bottom: 0px;right: 0px;z-index: 99999;" href="README.md.html" target="_blank">Open in new Tab</a>
+    <div id="__tabs__">
+    <ul>
+      <li><a href="#__preview_tab__">Preview</a></li>
+      <li><a href="#__js_tab__">JS</a></li>
+      <li><a href="#__css_tab__">CSS</a></li>
+    </ul>
+    <div id="__preview_tab__">
+    <div style="padding: 15px">
+        <div id="mountNode">
+        </div>
+    </div>
+    </div>
+    <div id="__js_tab__">
+    <pre>
+        <code class="language-javascript">import React from &#39;react&#39;;
+import { vanex, start } from &#39;@alife&#x2F;vanex&#39;;
+
+const countModel &#x3D; {
+  name: &#39;countModel&#39;,
+  data: {
+    counts: 0,
+  },
+  syncs: {
+    inc() {
+      this.counts++;
+    },
+  },
+};
+
+@vanex(&#39;countModel&#39;)
+class CountComponent extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+    this.clickHandler &#x3D; this.clickHandler.bind(this);
+  }
+
+  clickHandler() {
+    &#x2F;&#x2F; 可以调用 model 的方法触发数据改变
+    this.countModel.inc();
+    &#x2F;&#x2F; 也可以直接修改 model 中的值
+    &#x2F;&#x2F; this.countModel.counts ++;
+  }
+
+  render() {
+    &#x2F;&#x2F; 可以直接通过 this.countModel 访问被 @vanex 注入的 countModel
+    &#x2F;&#x2F; 也可以通过 this.props.countModel 访问，但是除非是纯函数组件否则推荐通过 this 访问
+    return (
+      &lt;button onClick&#x3D;{this.clickHandler}&gt;
+        Click {this.countModel.counts}
+      &lt;&#x2F;button&gt;
+    );
+  }
+}
+
+class Home extends React.Component {
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;HomePage&lt;&#x2F;h1&gt;
+        &lt;CountComponent &#x2F;&gt;
+      &lt;&#x2F;div&gt;
+    );
+  }
+}
+
+start({
+  component: Home,
+  container: &#39;#mountNode&#39;,
+  models: {
+    &#x2F;&#x2F; 注册模型
+    countModel,
+  },
+});
+</code>
+    </pre>
+    </div>
+    <div id="__css_tab__">
+    <pre>
+        <code class="language-css">button {
+  width: 100px;
+  height: 100px;
+}</code>
+    </pre>
+    </div>
+  </div>
+    <script>
+        $( function() {
+            $('#__tabs__').tabs();
+        } );
+        window.mountNode = document.getElementById('mountNode');
+        var paths = {
+            'react': 'https://cdn.bootcss.com/react/16.0.0-beta.5/umd/react.production.min',
+            'react-dom': 'https://cdn.bootcss.com/react/15.6.1/react-dom.min',
+            'vanex': 'https://unpkg.com/vanex/lib/vanex.pack.min',
+            'antd': 'https://cdn.bootcss.com/antd/3.0.0-alpha0/antd.min',
+            'mobx': 'https://cdn.bootcss.com/mobx/3.2.2/mobx.umd.min',
+            'redux': 'https://cdn.bootcss.com/redux/3.7.2/redux.min',
+            'dva': 'https://unpkg.com/dva@2.0.1/dist/dva-min',
+        };
+        requirejs.config({
+            // module name mapped to CDN url
+            paths: paths,
+        });
+
+        var load = requirejs.load;
+        requirejs.load = function (context, moduleId, url) {
+            if (moduleId in paths) {
+            } else {
+                url = `https://unpkg.com/${moduleId}`;
+            }
+            return load(context, moduleId, url);
+        };
+
+        
+        var blocks = document.querySelectorAll('[type="es5-code"]');
+        window.require = requirejs;
+        function evalCode(code) {
+            eval(code);
+        }
+        
+        blocks.forEach(block => {
+          const code = block.innerText;
+          evalCode(code);
+        })
+
+    </script> 
+    </body>

@@ -1,0 +1,325 @@
+<body>
+    <link href="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/prism/9000.0.1/themes/prism.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script src="https://cdn.bootcss.com/prism/9000.0.1/prism.min.js"></script>
+    
+    
+    <script src="https://cdn.bootcss.com/babel-polyfill/7.0.0-alpha.20/polyfill.min.js"></script>
+    <script src="https://cdn.bootcss.com/require.js/2.3.5/require.min.js"></script>
+    
+    <script type="es5-code">
+    requirejs(['react', 'vanex'], function (_react, _vanex) {
+  'use strict';
+
+  var _react2 = _interopRequireDefault(_react);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+    var desc = {};
+    Object['ke' + 'ys'](descriptor).forEach(function (key) {
+      desc[key] = descriptor[key];
+    });
+    desc.enumerable = !!desc.enumerable;
+    desc.configurable = !!desc.configurable;
+
+    if ('value' in desc || desc.initializer) {
+      desc.writable = true;
+    }
+
+    desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+      return decorator(target, property, desc) || desc;
+    }, desc);
+
+    if (context && desc.initializer !== void 0) {
+      desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+      desc.initializer = undefined;
+    }
+
+    if (desc.initializer === void 0) {
+      Object['define' + 'Property'](target, property, desc);
+      desc = null;
+    }
+
+    return desc;
+  }
+
+  var _dec, _desc, _value, _obj, _dec2, _dec3, _desc2, _value2, _obj2;
+
+  var countModel = {
+    name: 'countModel',
+    data: {
+      counts: 0
+    },
+    syncs: {
+      inc: function inc() {
+        this.counts++;
+      }
+    }
+  };
+
+  // 直接用 vanex 包裹一层
+  var CountComp = (0, _vanex.vanex)('countModel')(function (_ref) {
+    var countModel = _ref.countModel;
+
+    return _react2.default.createElement(
+      'button',
+      { onClick: function onClick(e) {
+          return countModel.inc();
+        } },
+      'Click ',
+      countModel.counts
+    );
+  });
+
+  // 由于不支持直接在函数上使用注解，但是对象的方法可以
+  // 如果要在纯函数组件上使用注解，可以使用下面的方式
+
+  var _CountComponent = (_dec = (0, _vanex.vanex)('countModel'), (_obj = {
+    CountComponent: function CountComponent(_ref2) {
+      var countModel = _ref2.countModel;
+
+      return _react2.default.createElement(
+        'button',
+        { onClick: function onClick(e) {
+            return countModel.inc();
+          } },
+        'Click ',
+        countModel.counts
+      );
+    }
+  }, (_applyDecoratedDescriptor(_obj, 'CountComponent', [_dec], Object.getOwnPropertyDescriptor(_obj, 'CountComponent'), _obj)), _obj)),
+      CountComponent = _CountComponent.CountComponent;
+
+  // 这样也可行
+  var Pures = (_dec2 = (0, _vanex.vanex)('countModel'), _dec3 = (0, _vanex.vanex)('countModel'), (_obj2 = {
+    CountComponent: function CountComponent(_ref3) {
+      var countModel = _ref3.countModel;
+
+      return _react2.default.createElement(
+        'button',
+        { onClick: function onClick(e) {
+            return countModel.inc();
+          } },
+        'Click ',
+        countModel.counts
+      );
+    },
+    Title: function Title(_ref4) {
+      var countModel = _ref4.countModel;
+
+      return _react2.default.createElement(
+        'h1',
+        null,
+        countModel.counts
+      );
+    }
+  }, (_applyDecoratedDescriptor(_obj2, 'CountComponent', [_dec2], Object.getOwnPropertyDescriptor(_obj2, 'CountComponent'), _obj2), _applyDecoratedDescriptor(_obj2, 'Title', [_dec3], Object.getOwnPropertyDescriptor(_obj2, 'Title'), _obj2)), _obj2));
+
+  var Home = function Home() {
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'h1',
+        null,
+        '\u7EAF\u51FD\u6570\u7EC4\u4EF6'
+      ),
+      _react2.default.createElement(CountComp, null),
+      _react2.default.createElement(CountComponent, null),
+      _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(Pures.CountComponent, null),
+        _react2.default.createElement(Pures.Title, null)
+      )
+    );
+  };
+
+  (0, _vanex.start)({
+    component: Home,
+    container: '#mountNode',
+    models: {
+      // 注册模型
+      countModel: countModel
+    }
+  });
+});
+    </script>
+    <style>
+    button {
+  width: 100px;
+  height: 100px;
+}
+    html {
+        overflow-y: hidden;
+    }
+    #__tabs__ {
+        height: 100%;
+        border: none;
+    }
+
+    #__js_tab__ pre, #__css_tab__ pre {
+        white-space: inherit;
+    }
+
+    #__js_tab__, #__css_tab__ {
+        height: 90%;
+        overflow-y: scroll;
+    }
+    
+    #__tabs__ .ui-widget-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+    #__tabs__>div {
+        margin-top: 2em;
+    }
+    </style> 
+
+    <a style="position: fixed;bottom: 0px;right: 0px;z-index: 99999;" href="pure-functional-component.md.html" target="_blank">Open in new Tab</a>
+    <div id="__tabs__">
+    <ul>
+      <li><a href="#__preview_tab__">Preview</a></li>
+      <li><a href="#__js_tab__">JS</a></li>
+      <li><a href="#__css_tab__">CSS</a></li>
+    </ul>
+    <div id="__preview_tab__">
+    <div style="padding: 15px">
+        <div id="mountNode">
+        </div>
+    </div>
+    </div>
+    <div id="__js_tab__">
+    <pre>
+        <code class="language-javascript">import React from &#39;react&#39;;
+import { vanex, start } from &#39;vanex&#39;;
+
+const countModel &#x3D; {
+  name: &#39;countModel&#39;,
+  data: {
+    counts: 0,
+  },
+  syncs: {
+    inc() {
+      this.counts++;
+    },
+  },
+};
+
+&#x2F;&#x2F; 直接用 vanex 包裹一层
+const CountComp &#x3D; vanex(&#39;countModel&#39;)(({ countModel }) &#x3D;&gt; {
+  return &lt;button onClick&#x3D;{e &#x3D;&gt; countModel.inc()}&gt;
+    Click {countModel.counts}
+  &lt;&#x2F;button&gt;
+});
+
+&#x2F;&#x2F; 由于不支持直接在函数上使用注解，但是对象的方法可以
+&#x2F;&#x2F; 如果要在纯函数组件上使用注解，可以使用下面的方式
+const { CountComponent } &#x3D; {
+  @vanex(&#39;countModel&#39;)
+  CountComponent({ countModel }) {
+  	return &lt;button onClick&#x3D;{e &#x3D;&gt; countModel.inc()}&gt;
+        Click {countModel.counts}
+    &lt;&#x2F;button&gt;
+  }
+};
+
+&#x2F;&#x2F; 这样也可行
+const Pures &#x3D; {
+  @vanex(&#39;countModel&#39;)
+  CountComponent({ countModel }) {
+  	return &lt;button onClick&#x3D;{e &#x3D;&gt; countModel.inc()}&gt;
+        Click {countModel.counts}
+    &lt;&#x2F;button&gt;
+  },
+
+	@vanex(&#39;countModel&#39;)
+	Title({ countModel }) {
+    return &lt;h1&gt;{countModel.counts}&lt;&#x2F;h1&gt;
+  }
+}
+
+const Home &#x3D; () &#x3D;&gt; &lt;div&gt;
+	&lt;h1&gt;纯函数组件&lt;&#x2F;h1&gt;
+  &lt;CountComp &#x2F;&gt;
+  &lt;CountComponent &#x2F;&gt;
+  &lt;div&gt;
+  	&lt;Pures.CountComponent&#x2F;&gt;
+    &lt;Pures.Title&#x2F;&gt;
+  &lt;&#x2F;div&gt;
+&lt;&#x2F;div&gt;;
+
+start({
+  component: Home,
+  container: &#39;#mountNode&#39;,
+  models: {
+    &#x2F;&#x2F; 注册模型
+    countModel,
+  },
+});
+</code>
+    </pre>
+    </div>
+    <div id="__css_tab__">
+    <pre>
+        <code class="language-css">button {
+  width: 100px;
+  height: 100px;
+}</code>
+    </pre>
+    </div>
+  </div>
+    <script>
+        $( function() {
+            $('#__tabs__').tabs();
+        } );
+        window.mountNode = document.getElementById('mountNode');
+        var paths = {
+            'react': 'https://cdn.bootcss.com/react/16.0.0-beta.5/umd/react.production.min',
+            'react-dom': 'https://cdn.bootcss.com/react/15.6.1/react-dom.min',
+            'vanex': 'https://unpkg.com/vanex/lib/vanex.pack.min',
+            'antd': 'https://cdn.bootcss.com/antd/3.0.0-alpha0/antd.min',
+            'mobx': 'https://cdn.bootcss.com/mobx/3.2.2/mobx.umd.min',
+            'redux': 'https://cdn.bootcss.com/redux/3.7.2/redux.min',
+            'dva': 'https://unpkg.com/dva@2.0.1/dist/dva-min',
+        };
+        requirejs.config({
+            // module name mapped to CDN url
+            paths: paths,
+        });
+
+        var load = requirejs.load;
+        requirejs.load = function (context, moduleId, url) {
+            if (moduleId in paths) {
+            } else {
+                url = `https://unpkg.com/${moduleId}`;
+            }
+            return load(context, moduleId, url);
+        };
+
+        
+        var blocks = document.querySelectorAll('[type="es5-code"]');
+        window.require = requirejs;
+        function evalCode(code) {
+            eval(code);
+        }
+        
+        blocks.forEach(block => {
+          const code = block.innerText;
+          evalCode(code);
+        })
+
+    </script> 
+    </body>
