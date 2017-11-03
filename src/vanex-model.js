@@ -70,7 +70,6 @@ export default class MobxModel {
         extendObservable(this, initData);
 
         // 初始化 computed
-
         const computedMap = this.computed || [];
         // const mobxComputeds = mapValues(computedMap, value => computed(value));
 
@@ -202,14 +201,13 @@ export default class MobxModel {
     }
 
     setActionState(actionName, val) {
-        extendObservable(this._actionStates, {
+        Object.assign(this._actionStates, {
             [actionName]: val || {
                 loading: false,
                 error: null
             }
         });
     }
-
 }
 
 // 同步数据处理
@@ -248,6 +246,8 @@ export function toMobxAsyncActions(modelName, actions) {
                     .getActionState(actionName)
                     .error
             });
+
+            console.log(22);
 
             // 2. exec action with hooks
             return this

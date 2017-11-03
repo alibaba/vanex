@@ -76,11 +76,17 @@ export default {
 
             return res;
         },
+
+        async effectForAutorun() {
+            console.error('effectForAutorun');
+        },
     },
 
     autorun: {
         // this.toJS can listen all data changed
         saveToLocalStorage() {
+            this.effectForAutorun(); // autorun里执行effect里的方法会导致死循环，需要修复
+
             localStorage.setItem(STORE_KEY, JSON.stringify(this.toJS()));
         },
     },

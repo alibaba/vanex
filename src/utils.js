@@ -60,7 +60,7 @@ export function toObservableObj(obj = {}) {
 }
 
 export function each(obj = {}, fn) {
-    Object.keys(obj).forEach((key) => {
+    Object.keys(obj).forEach(key => {
         fn(obj[key], key);
     });
 }

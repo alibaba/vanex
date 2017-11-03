@@ -1,7 +1,9 @@
 # vanex
 [![](https://img.shields.io/npm/dm/vanex.svg)](https://www.npmjs.com/package/vanex)
 
-[![NPM](https://nodei.co/npm/vanex.png)](https://npmjs.org/package/vanex)
+[![NPM](https://nodei.co/npm/vanex.png)](https://npmjs.org/package/vanex)  
+
+[github](https://github.com/alibaba/vanex)
 
 Vanex 是基于 mobx 的 React 数据流管理框架，旨在借助 mobx 提供的基础能力，帮助用户组织更大规模的 React 项目。
 
@@ -33,3 +35,7 @@ start({
 ```
 
 See more: [https://alibaba.github.io/vanex/quick-start.html](https://alibaba.github.io/vanex/quick-start.html)
+
+# TODO
+
+- [x] 修复`autorun`里执行effects里的方法会导致死循环的问题；
