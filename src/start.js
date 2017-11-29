@@ -48,7 +48,7 @@ export default({
         }
 
         get mobxStores() {
-            return this.refs['_conatinerComponent'].context.mobxStores;
+            return this.refs && this.refs['_conatinerComponent'] ? this.refs['_conatinerComponent'].context.mobxStores : {};
         }
 
         render() {

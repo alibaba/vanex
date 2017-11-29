@@ -247,8 +247,6 @@ export function toMobxAsyncActions(modelName, actions) {
                     .error
             });
 
-            console.log(22);
-
             // 2. exec action with hooks
             return this
                 ._middleware
