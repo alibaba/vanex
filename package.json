@@ -44,6 +44,7 @@
     "babel-register": "^6.14.0",
     "react": "^15.x",
     "react-dom": "^15.x",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "webpack": "^3.8.1"
   }
 }
