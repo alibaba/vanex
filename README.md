@@ -36,6 +36,11 @@ start({
 
 See more: [https://alibaba.github.io/vanex/quick-start.html](https://alibaba.github.io/vanex/quick-start.html)
 
+# 说明
+
+- mobx是基于`Object.defineProperties()`(无法监听新增属性)实现的，所以会导致：如果在model的data里没有预先设置某项值，后面对该值做改动的时候就不会触发UI的重新渲染，解决方案：调用React刷新UI的API，手动触发UI更新：`this.foreceUpdate()`；
+- ES7 decorator语法的编译需要babel插件支持：[babel-plugin-transform-decorators-legacy](https://www.npmjs.com/package/babel-plugin-transform-decorators-legacy)。
+
 # TODO
 
 - [x] 修复`autorun`里执行effects里的方法会导致死循环的问题；
