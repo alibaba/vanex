@@ -1,10 +1,8 @@
 /**
  * Copyright (C) 2017-2017 Alibaba Group Holding Limited
-*/
+ */
 
-import {
-    isFunction
-} from './utils';
+import { isFunction } from "./utils";
 
 export default class Middleware {
     middleware = [];
@@ -24,10 +22,12 @@ export default class Middleware {
 
         for (const fn of middleware) {
             if (!isFunction(fn)) {
-                throw new TypeError('Middleware must be composed of functions!');
+                throw new TypeError(
+                    "Middleware must be composed of functions!"
+                );
             }
         }
-        
+
         this.middleware = [...this.middleware, ...middleware];
     }
 
@@ -36,7 +36,7 @@ export default class Middleware {
             middleware = [middleware];
         }
 
-        middleware.forEach((item) => {
+        middleware.forEach(item => {
             const index = this.middleware.indexOf(item);
             this.middleware.splice(index, 1);
         });
@@ -53,10 +53,8 @@ export default class Middleware {
      */
     compose(arg = {}) {
         return this.middleware.reduce((pm, fn) => {
-            return pm.then((payload) => {
-                return fn({...arg,
-                    payload
-                });
+            return pm.then(payload => {
+                return fn({ ...arg, payload });
             });
         }, Promise.resolve(arg.payload));
     }

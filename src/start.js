@@ -60,12 +60,18 @@ export default({
             }
 
             return (
-                <Provider {...data} {...form}>
+                <Provider {...data} {...form} mobxStores={this.mobxStores}>
                     <ContainerComponent ref='_conatinerComponent' {...this.props} />
                 </Provider>
             );
         }
     }
+
+
+    // see: https://github.com/reactjs/react-redux/issues/193
+    VanexComponent.contextTypes = Provider.contextTypes  = ContainerComponent.contextTypes = { 
+        mobxStores: React.PropTypes.object,
+    };
 
 
     let containerEl = container;

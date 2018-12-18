@@ -1,14 +1,12 @@
 /**
  * Copyright (C) 2017-2017 Alibaba Group Holding Limited
-*/
+ */
 
 const toString = Object.prototype.toString;
 
-import invariant from 'invariant';
-import {
-    observable,
-} from 'mobx';
-import { set } from 'jsonuri';
+import invariant from "invariant";
+import { observable } from "mobx";
+import { set } from "jsonuri";
 
 /**
  * Applies a function to every key-value pair inside an object.
@@ -31,12 +29,12 @@ export function deepMapValues(obj, fn, res = {}) {
     return Object.keys(obj).reduce((result, key) => {
         let val = obj[key];
 
-        let keys = key.split('.');
+        let keys = key.split(".");
         let len = keys.length;
 
         let lastKey = keys[len - 1];
 
-        set(result, keys.join('/'), fn(val, lastKey));
+        set(result, keys.join("/"), fn(val, lastKey));
 
         return result;
     }, res);
@@ -47,14 +45,14 @@ export function deepMapValues(obj, fn, res = {}) {
  * @returns {Promise}
  */
 export function toPromise(val) {
-    if (val && typeof val.then === 'function') {
+    if (val && typeof val.then === "function") {
         return val;
     }
     return Promise.resolve(val);
 }
 
 export function toObservableObj(obj = {}) {
-    return mapValues(obj, (item) => {
+    return mapValues(obj, item => {
         return observable(item);
     });
 }
@@ -64,9 +62,9 @@ export function each(obj = {}, fn) {
         fn(obj[key], key);
     });
 }
-export const isFunction = arg => toString.call(arg) === '[object Function]';
-export const isRegExp = arg => toString.call(arg) === '[object RegExp]';
-export const isObject = arg => toString.call(arg) === '[object Object]';
+export const isFunction = arg => toString.call(arg) === "[object Function]";
+export const isRegExp = arg => toString.call(arg) === "[object RegExp]";
+export const isObject = arg => toString.call(arg) === "[object Object]";
 
 export function compose(arr, arg) {
     return arr.reduce((cur, fn) => {
@@ -74,13 +72,16 @@ export function compose(arr, arg) {
     }, Promise.resolve(arg));
 }
 
-export function nameToUpperCase(name = '') {
+export function nameToUpperCase(name = "") {
     return name[0].toUpperCase() + name.slice(1);
 }
 
 export function inherits(subClass, superClass) {
-    if (typeof superClass !== 'function' && superClass !== null) {
-        throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass);
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError(
+            "Super expression must either be null or a function, not " +
+                typeof superClass
+        );
     }
     subClass.prototype = Object.create(superClass && superClass.prototype, {
         constructor: {
@@ -102,14 +103,26 @@ export function inherits(subClass, superClass) {
 
 export function classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
-        throw new TypeError('Cannot call a class as a function');
+        throw new TypeError("Cannot call a class as a function");
     }
 }
 
 export function possibleConstructorReturn(self, call) {
     if (!self) {
-        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        throw new ReferenceError(
+            "this hasn't been initialised - super() hasn't been called"
+        );
     }
 
-    return call && (typeof call === 'object' || typeof call === 'function') ? call : self;
+    return call && (typeof call === "object" || typeof call === "function")
+        ? call
+        : self;
 }
+
+export const isArray = data => {
+    if (isObject(data) && "toJS" in data) {
+        data = data.toJS();
+    }
+
+    return Array.isArray(data) && data.length;
+};

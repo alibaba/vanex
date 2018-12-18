@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2017-2017 Alibaba Group Holding Limited
  * Copyright (C) 2017-2017 刘文成 (wencheng.lwc@antfin.com)
-*/
+ */
 
 import {
     action,
@@ -11,23 +11,31 @@ import {
     runInAction,
     spy,
     toJS,
-    computed,
-} from 'mobx';
-import {
-    deepMapValues,
-    each,
-    isRegExp,
-    mapValues
-} from './utils';
+    computed
+} from "mobx";
+import { deepMapValues, each, mapValues } from "./utils";
+import is from "is";
 
 let count = 0;
 
 export default class MobxModel {
-    static uuid = 0
+    static uuid = 0;
 
-    constructor(initData = {}, middleware, plugin, autorunMap = {}, constants = {}) {
-        if (this.constructor !== MobxModel && this.constructor.uuid === Object.getPrototypeOf(this.constructor).uuid) {
-            throw new Error('[Vanex] Can not immediately extend from MobxModel.');
+    constructor(
+        initData = {},
+        middleware,
+        plugin,
+        autorunMap = {},
+        constants = {}
+    ) {
+        if (
+            this.constructor !== MobxModel &&
+            this.constructor.uuid ===
+                Object.getPrototypeOf(this.constructor).uuid
+        ) {
+            throw new Error(
+                "[Vanex] Can not immediately extend from MobxModel."
+            );
         }
 
         // 保存action状态
@@ -39,23 +47,21 @@ export default class MobxModel {
 
         this._id = count++;
 
-        Object
-            .keys(initData)
-            .forEach((key) => {
-                if (constants[key] !== undefined) {
-                    throw new Error(`[MobxModel] data key "${key}" is defined in constants`);
-                }
-            });
+        Object.keys(initData).forEach(key => {
+            if (constants[key] !== undefined) {
+                throw new Error(
+                    `[MobxModel] data key "${key}" is defined in constants`
+                );
+            }
+        });
 
         // check keys
-        this._dataKeys = Object
-            .keys(initData)
-            .concat(Object.keys(constants));
+        this._dataKeys = Object.keys(initData).concat(Object.keys(constants));
 
         this._checkDataKeys();
 
         // add constants
-        const _constants = mapValues(constants, (value) => {
+        const _constants = mapValues(constants, value => {
             return {
                 enumerable: true,
                 configurable: true,
@@ -77,13 +83,12 @@ export default class MobxModel {
 
         // 自动执行的函数map
         each(autorunMap, autorunFn => {
-            autorun(autorunFn, this);
+            autorun(autorunFn.bind(this), this);
         });
-
 
         // 监听state数据状态变化钩子
         if (this._plugin.hooks.onStateChange.length) {
-            spy(this._plugin.apply('onStateChange'));
+            spy(this._plugin.apply("onStateChange"));
         }
     }
 
@@ -109,10 +114,18 @@ export default class MobxModel {
             }
             if (Array.isArray(val) || isObservableArray(val)) {
                 return val.map(item => parse(item));
-            } else if (isRegExp(val)) {
+            } else if (
+                !val ||
+                is.date(val) ||
+                is.bool(val) ||
+                is.fn(val) ||
+                is.number(val) ||
+                is.string(val) ||
+                is.regexp(val)
+            ) {
                 return val;
-            } else if (val && typeof val === 'object') {
-                return mapValues(val, (item) => parse(item));
+            } else if (val && typeof val === "object") {
+                return mapValues(val, item => parse(item));
             }
 
             return toJS(val);
@@ -122,13 +135,11 @@ export default class MobxModel {
             return parse(this[key]);
         }
 
-        return this
-            ._dataKeys
-            .reduce((json, key) => {
-                json[key] = parse(this[key]);
+        return this._dataKeys.reduce((json, key) => {
+            json[key] = parse(this[key]);
 
-                return json;
-            }, {});
+            return json;
+        }, {});
     }
 
     toJSON(key) {
@@ -140,11 +151,9 @@ export default class MobxModel {
     }
 
     each(fn) {
-        this
-            ._dataKeys
-            .map((key) => {
-                fn(this[key], key, this);
-            });
+        this._dataKeys.map(key => {
+            fn(this[key], key, this);
+        });
     }
 
     toString() {
@@ -152,30 +161,30 @@ export default class MobxModel {
     }
 
     _checkDataKeys() {
-        this
-            ._dataKeys
-            .forEach((dataKey) => {
-                if (this[dataKey]) {
-                    throw new Error(`[MobxModel] Data key "${dataKey}" is defined in prototype methods.`);
-                }
-            });
+        this._dataKeys.forEach(dataKey => {
+            if (this[dataKey]) {
+                throw new Error(
+                    `[MobxModel] Data key "${dataKey}" is defined in prototype methods.`
+                );
+            }
+        });
     }
 
     set(key, val) {
         if (this._plugin.hooks.beforeSet.length) {
             let change = {};
-            if (typeof key === 'string') {
+            if (typeof key === "string") {
                 change[key] = val;
             } else {
                 change = key;
             }
 
-            this._plugin.apply('beforeSet')({
+            this._plugin.apply("beforeSet")({
                 change,
-                object: this,
+                object: this
             });
         }
-        if (typeof key === 'string') {
+        if (typeof key === "string") {
             this[key] = val;
         } else {
             // 运行一次，在给实例同步的同时，触发React Component的重新渲染
@@ -185,11 +194,13 @@ export default class MobxModel {
     }
 
     getActionState(actionName) {
-        if (actionName.split('/') === -1) {
-            throw new Error(`[MobxModel] Please specify your model name as "model/action": ${actionName}`);
+        if (actionName.split("/") === -1) {
+            throw new Error(
+                `[MobxModel] Please specify your model name as "model/action": ${actionName}`
+            );
         }
 
-        if (!this[actionName.split('/')[1]]) {
+        if (!this[actionName.split("/")[1]]) {
             throw new Error(`[MobxModel] Undefined action: ${actionName}`);
         }
 
@@ -218,10 +229,10 @@ export function toMobxSyncActions(name, syncs, plugin) {
             const result = action(actionFn).apply(this, actionArgs);
 
             if (plugin.hooks.onAction.length) {
-                plugin.apply('onAction')({
+                plugin.apply("onAction")({
                     actionName,
                     actionArgs,
-                    result,
+                    result
                 });
             }
 
@@ -242,14 +253,11 @@ export function toMobxAsyncActions(modelName, actions) {
             // 1. add loading state and save the pre error
             this.setActionState(actionName, {
                 loading: true,
-                error: this
-                    .getActionState(actionName)
-                    .error
+                error: this.getActionState(actionName).error
             });
 
             // 2. exec action with hooks
-            return this
-                ._middleware
+            return this._middleware
                 .execAction({
                     actionFn: action(actionFn),
                     actionName,

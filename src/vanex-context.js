@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2017-2017 Alibaba Group Holding Limited
  * Copyright (C) 2017-2017 刘文成 (wencheng.lwc@antfin.com)
-*/
+ */
 
 /**
  * MobxContent:在执行start初始化应用的时候，会:
@@ -10,12 +10,12 @@
  * 3、执行Relation的相关操作，初始化及Middleware添加hook。
  * */
 
-import MobxModel, {isMobxModelClass} from './vanex-model';
-import {each, isObject, mapValues} from './utils';
+import MobxModel, { isMobxModelClass } from "./vanex-model";
+import { each, isObject, mapValues } from "./utils";
 
-import MobxRelation from './vanex-relation';
-import createModel from './create-model';
-import globalMiddleware from './vanex-middleware';
+import MobxRelation from "./vanex-relation";
+import createModel from "./create-model";
+import globalMiddleware from "./vanex-middleware";
 
 export default class MobxContext {
     /**
@@ -27,7 +27,7 @@ export default class MobxContext {
      */
     constructor(models = {}, opts = {}) {
         this._middleware = opts.middleware || globalMiddleware;
-        this._relation = opts.relation || new MobxRelation;
+        this._relation = opts.relation || new MobxRelation();
         this._plugin = opts.plugin;
 
         this._models = {};
@@ -48,36 +48,46 @@ export default class MobxContext {
     set models(models) {
         // 校验是否重名
         Object.keys(models).some(key => {
-            if(key in this._models) {
-                console.error(`[vanex]: You have already existed the same model key: '${key}'`);
+            if (key in this._models) {
+                console.error(
+                    `[vanex]: You have already existed the same model key: '${key}'`
+                );
 
                 return true;
             }
         });
 
-        this._models = Object.assign((this._models || {}), models);
+        this._models = Object.assign(this._models || {}, models);
     }
 
     setData(models) {
-        this._data = Object.assign({}, this._data, mapValues(models, Model => {
-            if(isObject(Model)) {
-                Model = createModel(Model);
-            }
+        this._data = Object.assign(
+            {},
+            this._data,
+            mapValues(models, Model => {
+                if (isObject(Model)) {
+                    Model = createModel(Model);
+                }
 
-            // Get a class
-            if (isMobxModelClass(Model)) {
-                const result = new Model(null, this._middleware, this._plugin);
-                return result;
-            }
+                // Get a class
+                if (isMobxModelClass(Model)) {
+                    const result = new Model(
+                        null,
+                        this._middleware,
+                        this._plugin
+                    );
+                    return result;
+                }
 
-            // Get an instance
-            if (Model instanceof MobxModel) {
-                // update model's middleware
-                Model.middleware = this._middleware;
-                Model._plugin = this._plugin;
-                return Model;
-            }
-        }));
+                // Get an instance
+                if (Model instanceof MobxModel) {
+                    // update model's middleware
+                    Model.middleware = this._middleware;
+                    Model._plugin = this._plugin;
+                    return Model;
+                }
+            })
+        );
     }
 
     addModel(models) {
@@ -99,7 +109,7 @@ export default class MobxContext {
                 this._relation.execInMiddleware({
                     ...arg,
                     fullname,
-                    context: this,
+                    context: this
                 });
             });
 
@@ -138,22 +148,32 @@ export default class MobxContext {
 
     checkMobxModels(mobxModels) {
         if (Array.isArray(mobxModels)) {
-            mobxModels.forEach((name) => {
+            mobxModels.forEach(name => {
                 if (!this._data[name]) {
-                    throw new Error(`[@observer] Can not find data "${name}" in MobxContext.`);
+                    throw new Error(
+                        `[@observer] Can not find data "${name}" in MobxContext.`
+                    );
                 }
             });
         } else {
             each(mobxModels, (MobxModel, name) => {
                 if (this._data[name]) {
                     if (!isMobxModelClass(MobxModel)) {
-                        throw new TypeError(`[@observer] MobxContext required MobxModel class.`);
+                        throw new TypeError(
+                            `[@observer] MobxContext required MobxModel class.`
+                        );
                     }
-                    if (!(this._data[name]instanceof MobxModel)) {
-                        throw new TypeError(`[@observer] ${name} is not instance of ${MobxModel.name}.`);
+                    if (!(this._data[name] instanceof MobxModel)) {
+                        throw new TypeError(
+                            `[@observer] ${name} is not instance of ${
+                                MobxModel.name
+                            }.`
+                        );
                     }
                 } else {
-                    throw new Error(`[@observer] Can not find data "${name}" in MobxContext.`);
+                    throw new Error(
+                        `[@observer] Can not find data "${name}" in MobxContext.`
+                    );
                 }
             });
         }
@@ -162,7 +182,9 @@ export default class MobxContext {
     pick(...keys) {
         return keys.reduce((obj, key) => {
             if (!this._data[key])
-                throw new Error(`[MobxContext] Can not find data "${key}" in MobxContext.`);
+                throw new Error(
+                    `[MobxContext] Can not find data "${key}" in MobxContext.`
+                );
             obj[key] = this._data[key];
             return obj;
         }, {});
@@ -170,7 +192,9 @@ export default class MobxContext {
 
     find(key) {
         if (!this._data[key])
-            throw new Error(`[MobxContext] Can not find data "${key}" in MobxContext.`);
+            throw new Error(
+                `[MobxContext] Can not find data "${key}" in MobxContext.`
+            );
         return this._data[key];
     }
 
