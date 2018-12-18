@@ -20,9 +20,6 @@ import React from 'react';
 import { vanex, start } from 'vanex';
 import axios from 'axios';
 
-// 异步请求配置
-registerService(service);
-
 const model = {
     name: 'my',
 
